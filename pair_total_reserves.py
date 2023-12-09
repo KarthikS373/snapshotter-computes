@@ -41,59 +41,6 @@ class PairTotalReservesProcessor(GenericProcessorSnapshot):
         epoch_usd_reserves_snapshot_map_token0 = dict()
         epoch_usd_reserves_snapshot_map_token1 = dict()
         max_block_timestamp = int(time.time())
-
-        self._logger.debug(f'pair reserves {data_source_contract_address} computation init time {time.time()}')
-        pair_reserve_total = await get_pair_reserves(
-            pair_address=data_source_contract_address,
-            from_block=min_chain_height,
-            to_block=max_chain_height,
-            redis_conn=redis_conn,
-            rpc_helper=rpc_helper,
-            fetch_timestamp=True,
-        )
-
-        for block_num in range(min_chain_height, max_chain_height + 1):
-            block_pair_total_reserves = pair_reserve_total.get(block_num)
-            fetch_ts = True if block_num == max_chain_height else False
-
-            epoch_reserves_snapshot_map_token0[
-                f'block{block_num}'
-            ] = block_pair_total_reserves['token0']
-            epoch_reserves_snapshot_map_token1[
-                f'block{block_num}'
-            ] = block_pair_total_reserves['token1']
-            epoch_usd_reserves_snapshot_map_token0[
-                f'block{block_num}'
-            ] = block_pair_total_reserves['token0USD']
-            epoch_usd_reserves_snapshot_map_token1[
-                f'block{block_num}'
-            ] = block_pair_total_reserves['token1USD']
-
-            epoch_prices_snapshot_map_token0[
-                f'block{block_num}'
-            ] = block_pair_total_reserves['token0Price']
-
-            epoch_prices_snapshot_map_token1[
-                f'block{block_num}'
-            ] = block_pair_total_reserves['token1Price']
-
-            if fetch_ts:
-                if not block_pair_total_reserves.get('timestamp', None):
-                    self._logger.error(
-                        (
-                            'Could not fetch timestamp against max block'
-                            ' height in epoch {} - {}to calculate pair'
-                            ' reserves for contract {}. Using current time'
-                            ' stamp for snapshot construction'
-                        ),
-                        data_source_contract_address,
-                        min_chain_height,
-                        max_chain_height,
-                    )
-                else:
-                    max_block_timestamp = block_pair_total_reserves.get(
-                        'timestamp',
-                    )
         pair_total_reserves_snapshot = UniswapPairTotalReservesSnapshot(
             **{
                 'token0Reserves': epoch_reserves_snapshot_map_token0,
