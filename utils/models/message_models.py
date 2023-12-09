@@ -17,19 +17,30 @@ class SnapshotBase(BaseModel):
     timestamp: int
 
 
-class UniswapPairTotalReservesSnapshot(SnapshotBase):
-    token0Reserves: Dict[
-        str,
-        float,
-    ]  # block number to corresponding total reserves
-    token1Reserves: Dict[
-        str,
-        float,
-    ]  # block number to corresponding total reserves
-    token0ReservesUSD: Dict[str, float]
-    token1ReservesUSD: Dict[str, float]
-    token0Prices: Dict[str, float]
-    token1Prices: Dict[str, float]
+class FanatixContractSnapshot(SnapshotBase):
+    tierMaxSupply: Dict[str, int]  # tierId to max supply
+    currentSupply: Dict[str, int]  # tierId to current supply
+    balanceOfTokens: Dict[str, Dict[str, int]]  # tierId to owner to balance
+    # tierId to owner to list of tokens
+    ownedTokens: Dict[str, Dict[str, List[int]]]
+    tokenURI: str
+    tokenOwner: str
+    mintableTier: Dict[str, bool]  # tierId to mintability
+
+
+class FanatixTierSnapshot(BaseModel):
+    tierMaxSupply: Dict[str, int]  # tierId to max supply
+    currentSupply: Dict[str, int]  # tierId to current supply
+
+
+class FanatixOwnershipSnapshot(SnapshotBase):
+    balanceOfTokens: Dict[str, Dict[str, int]]  # tierId to owner to balance
+    # tierId to owner to list of tokens
+    ownedTokens: Dict[str, Dict[str, List[int]]]
+
+
+class FanatixRoyaltiesSnapshot(SnapshotBase):
+    royalties: Dict[str, float]  # tokenId or ownerId to royalty amount
 
 
 class logsTradeModel(BaseModel):

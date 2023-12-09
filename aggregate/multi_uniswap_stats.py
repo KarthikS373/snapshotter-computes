@@ -86,7 +86,8 @@ class AggreagateStatsProcessor(GenericProcessorAggregate):
             )
 
             if previous_stats_snapshot_data:
-                previous_stats_snapshot = UniswapStatsSnapshot.parse_obj(previous_stats_snapshot_data)
+                previous_stats_snapshot = UniswapStatsSnapshot.parse_obj(
+                    previous_stats_snapshot_data)
 
                 # calculate change in percentage
                 stats_data['volumeChange24h'] = (stats_data['volume24h'] - previous_stats_snapshot.volume24h) / \
