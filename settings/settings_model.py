@@ -4,18 +4,14 @@ from pydantic import BaseModel
 from pydantic import Field
 
 
-class UniswapContractAbis(BaseModel):
-    factory: str = Field(
-        ..., example='pooler/modules/uniswapv2static/abis/IUniswapV2Factory.json',
-    )
-    router: str = Field(..., example='pooler/modules/computes/static/abis/UniswapV2Router.json')
-    pair_contract: str = Field(
-        ..., example='pooler/modules/computes/static/abis/UniswapV2Pair.json',
-    )
-    erc20: str = Field(..., example='pooler/modules/computes/static/abis/IERC20.json')
-    trade_events: str = Field(
-        ..., example='pooler/modules/computes/static/abis/UniswapTradeEvents.json',
-    )
+class FanatixContractSettings(BaseModel):
+    abi_path: str = Field(..., example='static/abis/Fanatix.json')
+    contract_address: str = Field(...,
+                                  example='0x6042e48C73D6307dA8e1750d6892071A712Db855')
+
+
+class FanatixSettings(BaseModel):
+    fanatix_contract: FanatixContractSettings
 
 
 class ContractAddresses(BaseModel):
@@ -28,14 +24,18 @@ class ContractAddresses(BaseModel):
     MAKER: str = Field(
         ..., example='0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2',
     )
-    USDT: str = Field(..., example='0xc2132d05d31c914a87c6611c10748aeb04b58e8f')
+    USDT: str = Field(...,
+                      example='0xc2132d05d31c914a87c6611c10748aeb04b58e8f')
     DAI: str = Field(..., example='0x8f3cf7ad23cd3cadbd9735aff958023239c6a063')
-    USDC: str = Field(..., example='0x2791bca1f2de4661ed88a30c99a7a9449aa84174')
-    WETH: str = Field(..., example='0x7ceb23fd6bc0add59e62ac25578270cff1b9f619')
+    USDC: str = Field(...,
+                      example='0x2791bca1f2de4661ed88a30c99a7a9449aa84174')
+    WETH: str = Field(...,
+                      example='0x7ceb23fd6bc0add59e62ac25578270cff1b9f619')
     WETH_USDT: str = Field(
         ..., example='0xf6422b997c7f54d1c6a6e103bcb1499eea0a7046',
     )
-    FRAX: str = Field(..., example='0x853d955aCEf822Db058eb8505911ED77F175b99e')
+    FRAX: str = Field(...,
+                      example='0x853d955aCEf822Db058eb8505911ED77F175b99e')
     SYN: str = Field(..., example='0x0f2D719407FdBeFF09D87557AbB7232601FD9F29')
     FEI: str = Field(..., example='0x956F47F50A910163D8BF957Cf5846D573E7f87CA')
     agEUR: str = Field(
